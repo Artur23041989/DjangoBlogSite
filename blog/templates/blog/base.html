@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    </head>
+<body>
+<header>
+      <h1>Личный сайт</h1>
+      <p>Который сделан на основе готового шаблона</p>
+      <nav>
+        <ul>
+          <li><a href="{% url 'blog:index' %}">Эта страница</a></li>
+          <li><a href="{% url 'blog:about' %}">Другая страница</a></li>
+        </ul>
+      </nav>
+</header>
+<main>
+  <article>
+    <section>
+      <h2>Первая секция</h2>
+      <p>Она обо мне</p>
+      <img src="images/image.png" alt="Человек и пароход">
+      <p>Но может быть и о семантике, я пока не решил.</p>
+    </section>
+    <section>
+      <h2>Вторая секция</h2>
+      <p>Она тоже обо мне</p>
+    </section>
+    <section>
+      <h2>И третья</h2>
+      <p>Вы уже должны были начать догадываться.</p>
+    </section>
+  </article>
+</main>
+<footer>
+    <p>Сюда бы я вписал информацию об авторе и ссылки на другие сайты</p>
+</footer>
+{% block content %}
+{% endblock content %}
+</body>
+</html>

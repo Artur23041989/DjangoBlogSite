@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Post
 from .forms import PostForm
+
 
 
 def index(request):
@@ -45,7 +46,7 @@ def update_post(request, pk):
             post.author = post_form.cleaned_data["author"]
             post.image = post_form.cleaned_data["image"]
             post.save()
-            return read_post(request, pk=post.id)
+            return redirect('blog:read_post', pk=post.id)
     else:
         post_form = PostForm(initial={
             "title": post.title,

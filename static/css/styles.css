@@ -1,0 +1,9 @@
+body{
+    font-family: "Poppins"
+
+}
+*,
+*::after,
+*::before {
+    box-sizing: border-box
+}

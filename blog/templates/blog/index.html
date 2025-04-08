@@ -16,11 +16,12 @@
             <div class="post-author">
             {{ post.author }}
             </div>
-            <div class="post-title">
-                <a href="{% url 'blog:read_post' pk=post.pk %}">{{ post.title }}</a>
-                {{ post.text }}
-                {{ post.created_at }}
-    {% endfor %}
+                <div class="post-title">
+                    <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+                    {{ post.text }}
+                    {{ post.created_at }}
+                </div>
+            {% endfor %}
 
 
 {% endblock content %}

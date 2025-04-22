@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
-from django.conf.global_settings import STATICFILES_DIRS
+from django.conf.global_settings import STATICFILES_DIRS, LOGIN_REDIRECT_URL
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -125,6 +125,11 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "static/")]
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
 
+# путь, куда попадет пользователь после аутентификации
+LOGIN_REDIRECT_URL = 'blog:index'
+
+# куда направить пользователя, если его действие на сайте требует аутентификации
+LOGIN_URL = 'users:login'
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 

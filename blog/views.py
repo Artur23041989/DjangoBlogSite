@@ -1,26 +1,38 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Post
 from .forms import PostForm
-
+from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 
 
 
 def index(request):
-    posts = Post.objects.all() # получение всех постов (select * from blog_post)
-
-    context = {"title": "Главная страница", "posts": posts}
+    # получение всех постов, отсартированных по дате публикации (select * from blog_post order by created_at DESC)
+    posts = Post.objects.all().order_by('-created_at')
+    count_posts = Post.objects.count()
+    # показываем по три поста на странице
+    per_page = 3
+    paginator = Paginator(posts, per_page)
+    page_number = request.GET.get('page') # получаем номер страницы из URL
+    page_obj = paginator.get_page(page_number) # получаем объекты для текущей страницы
+    context = {
+        "title": "Главная страница",
+        "page_obj": page_obj,
+        "count_posts": count_posts
+    }
     return render(request, template_name='blog/index.html', context=context)
 
 def about(request):
-    context = {"title": "О сайте"}
+    count_posts = Post.objects.count()
+    context = {"title": "О сайте", "count_posts": count_posts}
     return render(request, template_name="blog/index.html", context=context)
 
+@login_required
 def add_post(request):
     if request.method == "GET":
         post_form = PostForm()
         context = {"title": "Добавить пост", "form": post_form}
         return render(request, template_name='blog/post_add.html', context=context)
-
     if request.method == "POST":
         post_form = PostForm(data=request.POST, files=request.FILES)
         if post_form.is_valid():
@@ -38,6 +50,7 @@ def read_post(request, slug):
     context = {"title": "Информация о посте", "post": post}
     return render(request, template_name="blog/post_detail.html", context=context)
 
+@login_required
 def update_post(request, pk):
     # post = Post.objects.get(pk=pk)
     post = get_object_or_404(Post, pk=pk)
@@ -59,6 +72,7 @@ def update_post(request, pk):
         })
         return render(request, template_name="blog/post_edit.html", context={"form": post_form})
 
+@login_required
 def delete_post(request, pk):
     # post = Post.objects.get(pk=pk)
     post = get_object_or_404(Post, pk=pk)

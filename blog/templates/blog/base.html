@@ -18,25 +18,18 @@
       <nav>
         <ul>
           <li><a href="{% url 'blog:index' %}">Эта страница</a></li>
+            {% if not user.is_authenticated %}
+            <li><a href="{% url 'users:login' %}">Вход</a></li>
+            <li><a href="{% url 'users:register' %}">Регистрация</a></li>
+            {% else %}
+            <li><a href="{% url 'users:profile' pk=user.pk %}">{{ user.username }}</a></li>
+            <li><a href="{% url 'users:logout' %}">Выйти</a></li>
           <li><a href="{% url 'blog:about' %}">Другая страница</a></li>
+            {% endif %}
         </ul>
       </nav>
 </header>
-<main>
-  <article>
-    <section>
-      <h2>Первая секция</h2>
-    </section>
-    <section>
-      <h2>Вторая секция</h2>
-    </section>
-    <section>
-      <h2>И третья</h2>
-    </section>
-  </article>
-</main>
 <footer>
-    <p>Сюда бы я вписал информацию об авторе и ссылки на другие сайты</p>
 </footer>
 
 

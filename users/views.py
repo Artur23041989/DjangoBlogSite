@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from users.forms import RegistrationForm, NewRegistrationForm
+from users.forms import RegistrationForm, NewRegistrationForm, CustomPasswordChangeForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from BlogSite.settings import LOGIN_REDIRECT_URL
 from django.contrib.auth.models import User
 from django.core.exceptions import PermissionDenied
+from django.contrib.auth import update_session_auth_hash
+from django.contrib import messages
 
 
 def register(request):
@@ -28,7 +30,7 @@ def register(request):
     return render(request, template_name="users/registration.html", context=context)
 
 def log_in(request):
-    # создание формы
+    # создание формы аутентификации
     form = AuthenticationForm(request, request.POST)
     # проверка формы
     if form.is_valid():
@@ -61,3 +63,25 @@ def user_profile(request, pk):
         raise PermissionDenied()
     context = {'user': user, 'title': 'Информация о пользователе'}
     return render(request, template_name='user/profile.html', context=context)
+
+@login_required
+def change_password(request):
+    if request.method == "POST":
+        form = CustomPasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            old_password = form.cleaned_data["old_passsword"]
+            if not request.user.check_password(old_password):
+                messages.error(request, "Старый пароль не верный")
+            else:
+                user = form.save()
+                update_session_auth_hash(request, user)
+                messages.success(request, "Ваш пароль успешно изменен")
+        else:
+            messages.error(request, "Пожалуйста исправьте ошибки")
+    else:
+        form = CustomPasswordChangeForm(request.user)
+    return render(request, template_name="users/change_password.html", context={"form":form})
+
+
+
+

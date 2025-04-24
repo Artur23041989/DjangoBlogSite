@@ -24,7 +24,7 @@
             {% else %}
             <li><a href="{% url 'users:profile' pk=user.pk %}">{{ user.username }}</a></li>
             <li><a href="{% url 'users:logout' %}">Выйти</a></li>
-          <li><a href="{% url 'blog:about' %}">Другая страница</a></li>
+            <li><a href="{% url 'blog:about' %}">Другая страница</a></li>
             {% endif %}
         </ul>
       </nav>

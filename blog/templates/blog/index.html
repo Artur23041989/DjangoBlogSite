@@ -2,6 +2,14 @@
 {% load static %}
 
 {% block content %}
+
+<div>
+    <form action="" method="get" style="display:flex; justify-content: end; margin-right: 50px">
+        <input type="search" name="query">
+        <button type="submit">Поиск</button>
+    </form>
+</div>
+
 <img src="{% static 'img/images.jpeg' %}" width="200px" height="auto">
 <div class="post-list">
     {% for post in page_obj %}

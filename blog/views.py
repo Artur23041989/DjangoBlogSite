@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.models import User
 from .models import Post
 from .forms import PostForm
 from django.contrib.auth.decorators import login_required
@@ -76,6 +77,14 @@ def delete_post(request, pk):
         post.delete()
         return redirect('blog:index')
     return render(request, template_name="blog/post_delete.html", context=context)
+
+def user_posts(request, users_id):
+    user = get_object_or_404(User, id=users_id)
+    # posts = user.posts.all()
+    posts = Post.objects.filter(author=user).select_related('author')
+    context={user:"user", posts:"posts"}
+    return render(request, template_name='blog/user_post.html', context=context)
+
 
 def page_not_found(request, exception):
     return render(request, template_name="blog/404.html", context={"title": "404"})

@@ -62,7 +62,7 @@ def user_profile(request, pk):
     if request.user != user:
         raise PermissionDenied()
     context = {'user': user, 'title': 'Информация о пользователе'}
-    return render(request, template_name='user/profile.html', context=context)
+    return render(request, template_name='users/profile.html', context=context)
 
 @login_required
 def change_password(request):

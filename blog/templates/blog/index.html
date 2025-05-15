@@ -1,15 +1,25 @@
 {% extends 'blog/base.html' %}
 {% load static %}
-
+{% load custom_tags %}
 {% block content %}
 
 <div>
-    <form action="" method="get" style="display:flex; justify-content: end; margin-right: 50px">
+    <form action="{% url 'blog:search_post' %}" method="get" style="display:flex; justify-content: end; margin-right: 50px">
         <input type="search" name="query">
         <button type="submit">Поиск</button>
     </form>
 </div>
+<div>
+        <form action="{% url 'blog:filter_post' %}" method="get">
+            {{ filter_form.author }}
+            {{ filter_form.created_at }}
+            <button type="submit">Фильтровать</button>
+        </form>
+</div>
 
+{% if page_obj|length == 0 %}
+<h2>По вашему запросу не найдено ни одного посат!</h2>
+{% else %}
 <img src="{% static 'img/images.jpeg' %}" width="200px" height="auto">
 <div class="post-list">
     {% for post in page_obj %}
@@ -41,10 +51,11 @@
             Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
         </span>
         {% if page_obj.has_next %}
-           <a href="?page={{ page_obj.next_page_number }}">Следующая</a>
+           <a href="?{% url_replace request 'page' page_obj.next_page_number %}">Следующая</a>
            <a href="?page={{ page_obj.paginator.num_pages }}">Последняя&raquo;</a>
         {% endif %}
     </span>
 </div>
+{% endif %}
 
 {% endblock content %}
